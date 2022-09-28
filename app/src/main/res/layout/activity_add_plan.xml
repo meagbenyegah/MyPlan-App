@@ -54,6 +54,10 @@
                 android:layout_marginBottom="40dp"/>
 
             <androidx.appcompat.widget.AppCompatEditText
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 android:drawableLeft="@drawable/ic_baseline_calendar_month_24"
                 android:drawablePadding="10dp"
                 android:id="@+id/date_edt"
@@ -88,7 +92,7 @@
                 android:layout_marginBottom="20dp"/>
 
             <CheckBox
-                android:id="@+id/checkbox_meat"
+                android:id="@+id/checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Task is recurring"
