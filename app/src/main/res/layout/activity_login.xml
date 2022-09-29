@@ -46,7 +46,7 @@
                 android:id="@+id/userpass"
                 android:maxLines="1"
                 android:background="@drawable/shape_rounded_rect_with_border"
-                android:inputType="textEmailAddress"
+                android:inputType="textPassword"
                 android:layout_width="match_parent"
                 android:textSize="18sp"
                 android:paddingTop="10dp"
