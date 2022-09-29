@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         if(email.equalsIgnoreCase("test@gmail.com") && password.equalsIgnoreCase("password"))
         {
             Toast.makeText(this, "Login Success", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(this, Plans.class);
+            Intent intent = new Intent(this, PlansActivity.class);
             //intent.putExtra("key", value); //Optional parameters
             LoginActivity.this.startActivity(intent);
         }
