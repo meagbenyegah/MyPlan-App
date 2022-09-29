@@ -24,8 +24,8 @@ public class LoginActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.userpass);
         btnLogin = (Button) findViewById(R.id.btnLogin);
 
-        email.setText("test@gmail.com");
-        password.setText("password");
+        //email.setText("test@gmail.com");
+        //password.setText("password");
 
         btnLogin.setOnClickListener(e -> {
             try {
