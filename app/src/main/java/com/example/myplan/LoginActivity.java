@@ -24,6 +24,9 @@ public class LoginActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.userpass);
         btnLogin = (Button) findViewById(R.id.btnLogin);
 
+        email.setText("test@gmail.com");
+        password.setText("password");
+
         btnLogin.setOnClickListener(e -> {
             try {
                 login(email.getText().toString(), password.getText().toString());
@@ -43,10 +46,11 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(this, PlansActivity.class);
             //intent.putExtra("key", value); //Optional parameters
             LoginActivity.this.startActivity(intent);
+            finish();
         }
         else
         {
-            Toast.makeText(this, "Login Faile", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Login Failed", Toast.LENGTH_LONG).show();
         }
 
     }

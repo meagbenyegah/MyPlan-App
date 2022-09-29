@@ -6,17 +6,17 @@ import java.util.Date;
 public class Plan implements Serializable {
     private String title;
     private String description;
-    private Date taskDate;
+    private String date;
     private String time;
-    private boolean recurring;
+    private String recurring;
 
     public Plan() {
     }
 
-    public Plan(String title, String description, Date taskDate, String time, boolean recurring) {
+    public Plan(String title, String description, String date, String time, String recurring) {
         this.title = title;
         this.description = description;
-        this.taskDate = taskDate;
+        this.date = date;
         this.time = time;
         this.recurring = recurring;
     }
@@ -37,14 +37,6 @@ public class Plan implements Serializable {
         this.description = description;
     }
 
-    public Date getTaskDate() {
-        return taskDate;
-    }
-
-    public void setTaskDate(Date taskDate) {
-        this.taskDate = taskDate;
-    }
-
     public String getTime() {
         return time;
     }
@@ -53,11 +45,19 @@ public class Plan implements Serializable {
         this.time = time;
     }
 
-    public boolean isRecurring() {
+    public String getRecurring() {
         return recurring;
     }
 
-    public void setRecurring(boolean recurring) {
+    public void setRecurring(String recurring) {
         this.recurring = recurring;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

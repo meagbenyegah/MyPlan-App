@@ -37,9 +37,9 @@ public class PlanListAdapter extends RecyclerView.Adapter<PlanListAdapter.ViewHo
         final Plan plan = plans.get(position);
         holder.title.setText(plans.get(position).getTitle());
         holder.description.setText(plans.get(position).getDescription());
-        holder.dateview.setText(""+plans.get(position).getTaskDate());
+        holder.dateview.setText(plans.get(position).getDate());
         holder.timeview.setText(plans.get(position).getTime());
-        holder.recurring.setText(""+plans.get(position).isRecurring());
+        holder.recurring.setText(plans.get(position).getRecurring());
 
         holder.linearLayoutCompat.setOnClickListener(new View.OnClickListener() {
             @Override

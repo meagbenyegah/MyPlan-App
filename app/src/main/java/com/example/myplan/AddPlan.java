@@ -3,16 +3,22 @@ package com.example.myplan;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.myplan.utils.DbHandler;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.checkbox.MaterialCheckBox;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -20,11 +26,14 @@ import java.util.Locale;
 
 public class AddPlan extends AppCompatActivity {
 
-    final Calendar myCalendar= Calendar.getInstance();
+    final Calendar myCalendar = Calendar.getInstance();
 
     MaterialButton submitBtn;
     EditText nameEdt,descriptionEdt,dateEdt,timeEdt;
-    CheckBox checkBox;
+    MaterialCheckBox checkBox;
+    String myDate, myTime;
+    int isChecked = 0;
+    private DbHandler dbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,18 +46,31 @@ public class AddPlan extends AppCompatActivity {
         descriptionEdt = findViewById(R.id.description_edt);
         dateEdt = findViewById(R.id.date_edt);
         timeEdt = findViewById(R.id.time_edt);
+        checkBox = findViewById(R.id.checkbox);
 
         submitBtn = findViewById(R.id.submit_btn);
 
         submitBtn.setOnClickListener(view -> prepareForm());
 
-        DatePickerDialog.OnDateSetListener date =new DatePickerDialog.OnDateSetListener() {
+        dbHandler = new DbHandler(this);
+
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH,month);
                 myCalendar.set(Calendar.DAY_OF_MONTH,day);
                 updateEditText();
+            }
+        };
+
+        TimePickerDialog.OnTimeSetListener time = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+
+                String time = cleanNumber(String.valueOf(selectedHour))+ ":"+cleanNumber(String.valueOf(selectedMinute));
+                timeEdt.setText(time);
+
             }
         };
 
@@ -59,6 +81,23 @@ public class AddPlan extends AppCompatActivity {
             }
         });
 
+        timeEdt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                int hour = myCalendar.get(Calendar.HOUR_OF_DAY);
+                int minute = myCalendar.get(Calendar.MINUTE);
+
+                new TimePickerDialog(AddPlan.this,time,hour,minute,false).show();
+            }
+        });
+
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                isChecked = checked ? 1 : 0;
+            }
+        });
 
     }
 
@@ -90,7 +129,19 @@ public class AddPlan extends AppCompatActivity {
             descriptionEdt.setError(Html.fromHtml("<font color='#ffffff'>Please enter description</font>"));
             descriptionEdt.requestFocus();
             valid = false;
+        }else if(_date.isEmpty()) {
+            dateEdt.setError(Html.fromHtml("<font color='#ffffff'>Please select date</font>"));
+            dateEdt.requestFocus();
+            valid = false;
+        }else if(_time.isEmpty()) {
+            dateEdt.setError(null);
+            timeEdt.setError(Html.fromHtml("<font color='#ffffff'>Please select time</font>"));
+            timeEdt.requestFocus();
+            valid = false;
         }
+
+        dateEdt.setError(null);
+        timeEdt.setError(null);
 
         return valid;
     }
@@ -109,14 +160,30 @@ public class AddPlan extends AppCompatActivity {
         //}
 
         //httpCreateProduct();
-        Toast.makeText(getApplicationContext(),"done", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(),"done", Toast.LENGTH_LONG).show();
+        savePlan();
 
     }
 
     private void updateEditText(){
-        String myFormat="MM/dd/yy";
-        SimpleDateFormat dateFormat=new SimpleDateFormat(myFormat, Locale.US);
+        String myFormat="dd MMMM yyyy";
+        String myFormat2="yyyy-MM-dd";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat2, Locale.US);
         dateEdt.setText(dateFormat.format(myCalendar.getTime()));
+    }
+
+    public static String cleanNumber(String number)
+    {
+        number = number.replaceAll("\"", "");
+        return Integer.valueOf(number)<=9?"0"+number:number;
+    }
+
+    public void savePlan(){
+
+        dbHandler.addPlan(nameEdt.getText().toString(), descriptionEdt.getText().toString(),
+                dateEdt.getText().toString(), timeEdt.getText().toString(),String.valueOf(isChecked));
+        //Toast.makeText(getApplicationContext(),"Saved", Toast.LENGTH_LONG).show();
+        finish();
     }
 
 }
